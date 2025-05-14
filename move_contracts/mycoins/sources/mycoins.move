@@ -7,13 +7,10 @@ module dex::mycoins{
     use std::ascii::String;
     use sui::event;
 
-    public struct ETH has drop{}
 
-    public struct DAI has drop{}
+    public struct XSUI has drop{}
 
-    public struct USDC has drop{}
-
-    public struct BNB has drop{}
+    public struct XBTC has drop{}
 
     public struct CoinMintEvent has drop,copy{
         owner: address,
