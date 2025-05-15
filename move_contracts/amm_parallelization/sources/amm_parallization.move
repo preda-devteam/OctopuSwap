@@ -2,7 +2,7 @@
 /// Module: amm
 
 */
-module dex::amm_parallization{
+module dex::amm_parallelization{
     use std::u128::sqrt;
     use sui::balance::{Self, Balance, Supply};
     use std::bcs;

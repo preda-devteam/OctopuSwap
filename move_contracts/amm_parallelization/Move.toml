@@ -1,0 +1,9 @@
+[package]
+name = "dex"
+edition = "2024.beta" 
+
+[addresses]
+dex = "0x0"
+
+[dependencies]
+Sui = { local = "../../../sui/crates/sui-framework/packages/sui-framework" }

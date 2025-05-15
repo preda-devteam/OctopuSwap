@@ -1,6 +1,0 @@
-[package]
-name = "dex"
-edition = "2024.beta" 
-
-[addresses]
-dex = "0x0"
