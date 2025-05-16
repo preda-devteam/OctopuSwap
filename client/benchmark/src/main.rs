@@ -6,6 +6,7 @@ use sui_sdk::types::{
     transaction::{TransactionData},
     crypto::{Signature},
 };
+use std::sync::Arc;
 
 const RPC_URL:&str = "http://127.0.0.1:9124";
 
@@ -73,10 +74,22 @@ async fn main()->Result<(),anyhow::Error> {
 //     Ok((raw_transactions_amm,raw_transactions_pamm))
 // }
 
-// async fn benchmark_swap_transactions(
-//     client: &SuiAmmClient,
-//     transactions_amm:Vec<RawTransactionData>,
-//     transactions_pamm:Vec<RawTransactionData>,    
-// )-> Result<(), anyhow::Error> {
-//     Ok(())
-// }
+async fn benchmark_transactions(
+    client: &SuiAmmClient,
+    transactions:Vec<RawTransactionData>,
+)-> Result<(), anyhow::Error> {
+    
+    let mut tasks = Vec::new();
+    for tx in transactions {
+        let client = client.clone();
+        tasks.push(tokio::spawn(async move {
+            let _ = client.submit_tx(tx.tx, tx.sig).await;
+        }));
+    }
+    
+    for task in tasks {
+        let _ = task.await;
+    }
+
+    Ok(())
+}
