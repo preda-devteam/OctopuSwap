@@ -36,9 +36,14 @@ pub struct SuiAmmClient{
     client: SuiClient
 }
 
+pub struct RawTransactionData{
+    pub tx: TransactionData,
+    pub sig: Signature,
+}
+
 pub enum ComposeOrSubmitTx {
     Submit(SuiTransactionBlockResponse),
-    Compose((TransactionData, Signature)),
+    Compose(RawTransactionData),
 }
 
 fn convert_number_to_string(value: Value) -> Value {
@@ -93,33 +98,41 @@ impl SuiAmmClient{
     }
 
     //get gas object
-    pub async fn get_gas(&self, address: &SuiAddress) -> Result<ObjectID, anyhow::Error>{
+    pub async fn get_gas(&self, address: &SuiAddress,obj_num: u64) -> Result<Vec<ObjectID>, anyhow::Error>{
         let http_client = Client::new();
-        let response = http_client.post(SUI_FAUCET)
-            .json(&json!({
-                "FixedAmountRequest": {
-                    "recipient": address.to_string(),
-                }
-            }))
-            .send()
-            .await?;
-       
-        let json: serde_json::Value = response.json().await?;
-        let gas_objects = json["coins_sent"]
-            .as_array()
-            .ok_or_else(|| anyhow::anyhow!("Invalid faucet response format"))?
-            .iter()
-            .map(|obj| {
-                obj["id"]
-                    .as_str()
-                    .ok_or_else(|| anyhow::anyhow!("Missing gas object ID"))
-                    .and_then(|s| ObjectID::from_str(s).map_err(|e| e.into()))
-            })
-            .collect::<Result<Vec<_>, _>>()?;
+        let mut gas_objects = Vec::new();
 
-        Ok(gas_objects[0])
+        while gas_objects.len() < obj_num as usize{
+            let response = http_client.post(SUI_FAUCET)
+              .json(&json!({
+                    "FixedAmountRequest": {
+                        "recipient": address.to_string(),
+                    }
+                }))
+              .send()
+              .await?;
+
+            let json: serde_json::Value = response.json().await?;
+            let batchs = json["coins_sent"]
+              .as_array()
+              .ok_or_else(|| anyhow::anyhow!("Invalid faucet response format"))?
+              .iter()
+             .map(|obj| {
+                    obj["id"]
+                      .as_str()
+                      .ok_or_else(|| anyhow::anyhow!("Missing gas object ID"))
+                      .and_then(|s| ObjectID::from_str(s).map_err(|e| e.into()))
+                })
+             .collect::<Result<Vec<_>, _>>()?;
+
+              gas_objects.extend(batchs);
+            }
+
+            gas_objects.truncate(obj_num as usize);
+            
+            Ok(gas_objects)
+        }
         
-    }
 
     pub async fn publish_amm_packages(
         &self,
@@ -366,7 +379,7 @@ impl SuiAmmClient{
 
 
     /* amm parallelization*/
-    pub async fn create_pool_amm_parallization(
+    pub async fn create_pool_amm_parallelization(
         &self,
         keypair:&SuiKeyPair,
         mycoins_package_id:ObjectID,
@@ -398,7 +411,7 @@ impl SuiAmmClient{
         self.handle_submission(tx_data, signature, should_submit).await
     }
 
-    pub async fn create_pool_empty_amm_parallization(
+    pub async fn create_pool_empty_amm_parallelization(
         &self,
         keypair:&SuiKeyPair,
         mycoins_package_id:ObjectID,
@@ -426,7 +439,7 @@ impl SuiAmmClient{
         self.handle_submission(tx_data, signature, should_submit).await
     }
 
-    pub async fn swap_amm_parallization(
+    pub async fn swap_amm_parallelization(
         &self,
         keypair:&SuiKeyPair,
         mycoins_package_id:ObjectID,
@@ -687,9 +700,13 @@ impl SuiAmmClient{
     ) -> Result<ComposeOrSubmitTx, anyhow::Error> {
         if should_submit {
             let response = self.submit_tx(tx_data, signature).await?;
+            println!(
+                "===============Transactionresponse===========\n{:?}",
+                response
+            );
             Ok(ComposeOrSubmitTx::Submit(response))
         } else {
-            Ok(ComposeOrSubmitTx::Compose((tx_data, signature)))
+            Ok(ComposeOrSubmitTx::Compose(RawTransactionData{tx:tx_data, sig:signature}))
         }
     }
 
