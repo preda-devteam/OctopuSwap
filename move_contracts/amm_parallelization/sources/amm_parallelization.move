@@ -9,6 +9,7 @@ module dex::amm_parallelization{
     use std::type_name::get;
     use sui::coin::{Self,Coin};
     use sui::event::emit;
+    use std::ascii::String;
     /*========= constants =========*/
     const EQUAL: u8 = 0;
     const SMALLER: u8 = 1;
@@ -44,15 +45,18 @@ module dex::amm_parallelization{
 
     /*========= events =========*/
     public struct CreateEvent has drop,copy{
-        pool_index: u64,
+        pool_id: address,
+        x_name: String,
+        y_name: String,
         reserve_x: u64,
         reserve_y: u64,
+        is_global: bool,
         lp_supply: u64,
         parallelism: u64,
     }
 
     public struct MintEvent has drop,copy{
-        pool_index: u64,
+        pool_id: address,
         amount_x_in: u64,
         amount_y_in:u64,
         lp_out: u64,
@@ -62,7 +66,7 @@ module dex::amm_parallelization{
     }
 
     public struct BurnEvent has drop,copy{
-        pool_index: u64,
+        pool_id: address,
         lp_in: u64,
         amount_x_out: u64,
         amount_y_out:u64,
@@ -72,7 +76,7 @@ module dex::amm_parallelization{
     }
 
     public struct SwapEvent has drop,copy{
-        pool_index: u64,
+        pool_id: address,
         amount_x_in: u64,
         amount_y_in:u64,
         amount_x_out: u64,
@@ -82,8 +86,8 @@ module dex::amm_parallelization{
     }
 
     public struct RebalanceEvent has drop,copy{
-        global_pool_index:u64,
-        shard_pool_index:u64,
+        pool_id: address,
+        sub_pool_id: address,
         reserve_x_g: u64,
         reserve_y_g: u64,
         reserve_x: u64,
@@ -102,8 +106,8 @@ module dex::amm_parallelization{
         id: UID,
         coin_x: Balance<X>,
         coin_y: Balance<Y>,
+        is_global: bool,
         lp_supply: Supply<LP<X, Y>>,
-        pool_index: u64,
         parallelism: u64,
     }
 
@@ -187,11 +191,7 @@ module dex::amm_parallelization{
     }
 
     public fun is_global<X,Y>(pool: &Pool<X,Y>):bool{
-        return pool.pool_index == pool.parallelism
-    }
-
-    public fun get_pool_index<X,Y>(pool:&Pool<X,Y>):u64{
-        return pool.pool_index
+        return pool.is_global
     }
 
     public fun get_pool_parallelism<X,Y>(pool:&Pool<X,Y>):u64{
@@ -228,14 +228,17 @@ module dex::amm_parallelization{
                 coin_x: balance::split(&mut coin_x_balance,shard_pool_amount_x),
                 coin_y: balance::split(&mut coin_y_balance,shard_pool_amount_y),
                 lp_supply: balance::create_supply(LP<X,Y>{}),
-                pool_index:i,
+                is_global: false,
                 parallelism: parallelism,
             };
             emit(CreateEvent{
+                pool_id: pool.id.to_address(),
+                x_name: get<X>().into_string(),
+                y_name: get<Y>().into_string(),
                 reserve_x: balance::value(&pool.coin_x),
                 reserve_y: balance::value(&pool.coin_y),
+                is_global: false,
                 lp_supply: balance::supply_value(&pool.lp_supply),
-                pool_index:pool.pool_index,
                 parallelism: pool.parallelism,
             });
             transfer::share_object(pool);
@@ -247,14 +250,17 @@ module dex::amm_parallelization{
             coin_x: coin_x_balance,
             coin_y: coin_y_balance,
             lp_supply: balance::create_supply(LP<X,Y>{}),
-            pool_index:parallelism,
+            is_global: true,
             parallelism:parallelism,
         };
         emit(CreateEvent{
+            pool_id: pool.id.to_address(),
+            x_name: get<X>().into_string(),
+            y_name: get<Y>().into_string(),
             reserve_x: balance::value(&pool.coin_x),
             reserve_y: balance::value(&pool.coin_y),
+            is_global: true,
             lp_supply: balance::supply_value(&pool.lp_supply),
-            pool_index:pool.pool_index,
             parallelism: pool.parallelism,
         });
         transfer::share_object(pool);
@@ -267,25 +273,47 @@ module dex::amm_parallelization{
         };
 
         let mut i = 0;
-        while(i < parallelism+1 ){
+        while(i < parallelism ){
             let pool = Pool{
                 id: object::new(ctx),
                 coin_x: balance::zero<X>(),
                 coin_y: balance::zero<Y>(),
+                is_global: false,
                 lp_supply: balance::create_supply(LP<X,Y>{}),
-                pool_index:i,
                 parallelism:parallelism,
             };
             emit(CreateEvent{
+                pool_id: pool.id.to_address(),
+                x_name: get<X>().into_string(),
+                y_name: get<Y>().into_string(),
                 reserve_x: balance::value(&pool.coin_x),
                 reserve_y: balance::value(&pool.coin_y),
+                is_global: false,
                 lp_supply: balance::supply_value(&pool.lp_supply),
-                pool_index:pool.pool_index,
                 parallelism: pool.parallelism,
             });
             transfer::share_object(pool);
             i = i+1;
         };
+        let pool = Pool{
+            id: object::new(ctx),
+            coin_x: balance::zero<X>(),
+            coin_y: balance::zero<Y>(),
+            lp_supply: balance::create_supply(LP<X,Y>{}),
+            is_global: true,
+            parallelism:parallelism,
+        };
+        emit(CreateEvent{
+            pool_id: pool.id.to_address(),
+            x_name: get<X>().into_string(),
+            y_name: get<Y>().into_string(),
+            reserve_x: balance::value(&pool.coin_x),
+            reserve_y: balance::value(&pool.coin_y),
+            is_global: true,
+            lp_supply: balance::supply_value(&pool.lp_supply),
+            parallelism: pool.parallelism,
+        });
+        transfer::share_object(pool);
     }
 
     // swap
@@ -307,7 +335,7 @@ module dex::amm_parallelization{
         let coin_out = coin::take(&mut global_pool.coin_y, coin_y_out, ctx);
         transfer::public_transfer(coin_out, tx_context::sender(ctx));
         emit(SwapEvent{
-            pool_index: global_pool.pool_index,
+            pool_id: global_pool.id.to_address(),
             amount_x_in: coin_x_in,
             amount_y_in:  0,
             amount_x_out: 0,
@@ -335,7 +363,7 @@ module dex::amm_parallelization{
         let coin_out = coin::take(&mut shard_pool.coin_y, coin_y_out, ctx);
         transfer::public_transfer(coin_out, tx_context::sender(ctx));
         emit(SwapEvent{
-            pool_index: shard_pool.pool_index,
+            pool_id: shard_pool.id.to_address(),
             amount_x_in: coin_x_in,
             amount_y_in:  0,
             amount_x_out: 0,
@@ -363,7 +391,7 @@ module dex::amm_parallelization{
         let coin_out = coin::take(&mut global_pool.coin_x, coin_x_out, ctx);
         transfer::public_transfer(coin_out, tx_context::sender(ctx));
         emit(SwapEvent{
-            pool_index: global_pool.pool_index,
+            pool_id: global_pool.id.to_address(),
             amount_x_in: coin_y_in,
             amount_y_in:  0,
             amount_x_out: 0,
@@ -391,7 +419,7 @@ module dex::amm_parallelization{
         let coin_out = coin::take(&mut shard_pool.coin_x, coin_x_out, ctx);
         transfer::public_transfer(coin_out, tx_context::sender(ctx));
         emit(SwapEvent{
-            pool_index: shard_pool.pool_index,
+            pool_id: shard_pool.id.to_address(),
             amount_x_in: coin_y_in,
             amount_y_in:  0,
             amount_x_out: 0,
@@ -467,7 +495,7 @@ module dex::amm_parallelization{
             tx_context::sender(ctx)
         );
         emit(MintEvent{
-            pool_index: global_pool.pool_index,
+            pool_id: global_pool.id.to_address(),
             amount_x_in: record_coin_x_in,
             amount_y_in: record_coin_y_in,
             lp_out: provided_liq,
@@ -504,7 +532,7 @@ module dex::amm_parallelization{
             tx_context::sender(ctx)
         );     
         emit(BurnEvent{
-            pool_index: global_pool.pool_index,
+            pool_id: global_pool.id.to_address(),
             lp_in: lp_val,
             amount_x_out: coin_x_out,
             amount_y_out:coin_y_out,
@@ -549,8 +577,8 @@ module dex::amm_parallelization{
         };
 
         emit(RebalanceEvent{
-            global_pool_index: global_pool.pool_index,
-            shard_pool_index: shard_pool.pool_index,
+            pool_id: global_pool.id.to_address(),
+            sub_pool_id: shard_pool.id.to_address(),
             reserve_x_g: balance::value(&global_pool.coin_x),
             reserve_y_g: balance::value(&global_pool.coin_y),
             reserve_x: balance::value(&shard_pool.coin_x),
