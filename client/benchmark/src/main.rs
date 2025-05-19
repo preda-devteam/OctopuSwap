@@ -14,19 +14,19 @@ use std::sync::Arc;
 use sui_json_rpc_types::SuiTransactionBlockEffectsAPI;
 use std::env;
 use rand::seq::SliceRandom;
-
+use std::fs::OpenOptions;
+use std::io::Write;
+use tokio::sync::Mutex as AsyncMutex;
+use serde::Deserialize;
 
 const RPC_URL:&str = "http://127.0.0.1:9124";
 
 const INIT_XBTC_AMOUNT:u64 = 1000000000;
 const INIT_XSUI_AMOUNT:u64 = 2000000000;
 
-const SWAP_MIN_AMOUNT:u64 = 10000;
+const SWAP_MIN_AMOUNT:u64 = 1000;
 // const SWAP_THRESHOLD_AMOUNT:u64 = 40000;
-const SWAP_MAX_AMOUNT:u64 = 50000;
-
-const TRANSACTION_NUM:u64 = 1000;
-const ACCOUNT_NUM:u64 = 400;
+const SWAP_MAX_AMOUNT:u64 = 5000;
 
 const PICKUP_MAX_EACH_ACCOUNT:u64 = 5;
 
@@ -82,12 +82,108 @@ pub fn get_pool_ids(response: &sui_sdk::rpc_types::SuiTransactionBlockResponse) 
     (global_pool_id, shard_pool_ids)
 }
 
+#[allow(dead_code)]
+#[derive(Debug, Deserialize)]
+pub struct ParallelizationSwapEventData {
+    pub pool_id: ObjectID,
+    pub amount_x_in: u64,
+    pub amount_y_in:u64,
+    pub amount_x_out: u64,
+    pub amount_y_out:u64,
+    pub reserve_x: u64,
+    pub reserve_y: u64,
+    pub reserve_x_estimate: u64,
+    pub reserve_y_estimate: u64,
+}
+
+#[allow(dead_code)]
+#[derive(Debug, Deserialize)]
+pub struct SwapEventData {
+    pub amount_x_in: u64,
+    pub amount_y_in:u64,
+    pub amount_x_out: u64,
+    pub amount_y_out:u64,
+    pub reserve_x: u64,
+    pub reserve_y: u64,
+}
+
+pub struct SyncLog {
+    pub pool_id: ObjectID,
+    pub amount_x_in: u64,
+    pub amount_y_in:u64,
+    pub amount_x_out: u64,
+    pub amount_y_out:u64,
+    pub reserve_x: u64,
+    pub reserve_y: u64,
+    pub slippage:f32,
+}
+
+pub fn get_swap_event_log(resp: &sui_sdk::rpc_types::SuiTransactionBlockResponse) -> Option<SyncLog> {
+    if let Some(events) = &resp.events {
+        for event in &events.data {
+            if event.type_.name.to_string() == "SwapEvent" {
+                if event.type_.module.to_string() == "amm" {
+                    let parsed: SwapEventData = bcs::from_bytes(&event.bcs.bytes()).ok()?;
+                    return Some(SyncLog {
+                        pool_id: ObjectID::ZERO,
+                        amount_x_in: parsed.amount_x_in,
+                        amount_y_in: parsed.amount_y_in,
+                        amount_x_out: parsed.amount_x_out,
+                        amount_y_out: parsed.amount_y_out,
+                        reserve_x: parsed.reserve_x,
+                        reserve_y: parsed.reserve_y,
+                        slippage: if parsed.amount_x_out > 0 {
+                            parsed.amount_x_out as f32 / parsed.reserve_x as f32
+                        } else {
+                            parsed.amount_y_out as f32 / parsed.reserve_y as f32
+                        },
+                    });
+                }
+                if event.type_.module.to_string() == "amm_parallelization" {
+                    let parsed: ParallelizationSwapEventData = bcs::from_bytes(&event.bcs.bytes()).ok()?;
+                    return Some(SyncLog {
+                        pool_id: parsed.pool_id,
+                        amount_x_in: parsed.amount_x_in,
+                        amount_y_in: parsed.amount_y_in,
+                        amount_x_out: parsed.amount_x_out,
+                        amount_y_out: parsed.amount_y_out,
+                        reserve_x: parsed.reserve_x, 
+                        reserve_y: parsed.reserve_y,
+                        slippage: if parsed.amount_x_out > 0 {
+                            parsed.amount_x_out as f32 / parsed.reserve_x_estimate as f32
+                        } else {
+                            parsed.amount_y_out as f32 / parsed.reserve_y_estimate as f32
+                        },
+                    });
+                }
+            }
+        }
+    }
+    None
+}
+
+fn parse_args(args: &[String]) -> (u64, u64) {
+    let mut transaction_num = 1000;
+    let mut account_num = 400;
+    
+    for i in 0..args.len() {
+        if args[i] == "--tx_num" && i+1 < args.len() {
+            transaction_num = args[i+1].parse().unwrap_or(1000);
+        }
+        if args[i] == "--acc_num" && i+1 < args.len() {
+            account_num = args[i+1].parse().unwrap_or(400);
+        }
+    }
+    (transaction_num, account_num)
+}
+
 #[tokio::main]
 async fn main()->Result<(),anyhow::Error> {
     let client = SuiAmmClient::new(RPC_URL).await?;
-    let mut accounts = generate_accounts(ACCOUNT_NUM);
 
     let args: Vec<String> = env::args().collect();
+    let (transaction_num, account_num) = parse_args(&args);
+    let mut accounts = generate_accounts(account_num);
     let use_amm_parallelization = args.contains(&"--parallel".to_string());
 
     println!("use_amm_parallelization:{}...",use_amm_parallelization);
@@ -129,8 +225,8 @@ async fn main()->Result<(),anyhow::Error> {
     let mut raw_transactions = if use_amm_parallelization {
         prepare_amm_parallelization_swap_transactions(
             &client,
-            TRANSACTION_NUM,
-            ACCOUNT_NUM-1,
+            transaction_num,
+            account_num-1,
             mycoins_package_id,
             amm_parallelization_package_id,
             swap_accounts_amm,
@@ -140,8 +236,8 @@ async fn main()->Result<(),anyhow::Error> {
     }else{
         prepare_amm_swap_transactions(
             &client,
-            TRANSACTION_NUM,
-            ACCOUNT_NUM-1,
+            transaction_num,
+            account_num-1,
             mycoins_package_id,
             amm_package_id,
             swap_accounts_amm,
@@ -152,7 +248,7 @@ async fn main()->Result<(),anyhow::Error> {
     println!("raw_transactions len:{}",raw_transactions.len());
 
     // //execute transactions
-    benchmark_swap_transactions(&client,raw_transactions).await?;
+    benchmark_swap_transactions(&client,raw_transactions,use_amm_parallelization).await?;
     Ok(())
 }
 
@@ -214,31 +310,38 @@ async fn prepare_swap_accounts_parallel(
             let account_address = SuiAddress::from(&account.public());
             let gas = client.get_gas(&account_address, PICKUP_MAX_EACH_ACCOUNT).await?;
             let use_xbtc = rng.gen_bool(0.5);
+            println!("use_xbtc:{}",use_xbtc);
+            let call_gas = gas[0];
+            let amount = rng.gen_range(SWAP_MIN_AMOUNT..SWAP_MAX_AMOUNT);
+            let mycoin_obj_collect = if use_xbtc {
+                client.get_mycoin_obj_and_split(&account, mycoins_package_id, call_gas, coin_manager, "XBTC", amount,PICKUP_MAX_EACH_ACCOUNT).await?
+            } else {
+                client.get_mycoin_obj_and_split(&account, mycoins_package_id, call_gas, coin_manager, "XSUI", amount,PICKUP_MAX_EACH_ACCOUNT).await?
+            };
+            // let mut create_tasks = Vec::new();
+            // for g in &gas {
+            //     let amount = rng.gen_range(SWAP_MIN_AMOUNT..SWAP_MAX_AMOUNT);
+            //     let client = client.clone();
+            //     let account = Arc::clone(&account);
 
-            let mut create_tasks = Vec::new();
-            for g in &gas {
-                let amount = rng.gen_range(SWAP_MIN_AMOUNT..SWAP_MAX_AMOUNT);
-                let client = client.clone();
-                let account = Arc::clone(&account);
+            //     create_tasks.push(async move {
+            //         if use_xbtc {
+            //             client.get_mycoin_obj(&account, mycoins_package_id, *g, coin_manager, "XBTC", amount).await
+            //         } else {
+            //             client.get_mycoin_obj(&account, mycoins_package_id, *g, coin_manager, "XSUI", amount).await
+            //         }
+            //     });
+            // }
 
-                create_tasks.push(async move {
-                    if use_xbtc {
-                        client.get_mycoin_obj(&account, mycoins_package_id, *g, coin_manager, "XBTC", amount).await
-                    } else {
-                        client.get_mycoin_obj(&account, mycoins_package_id, *g, coin_manager, "XSUI", amount).await
-                    }
-                });
-            }
-
-            let mycoin_objs = join_all(create_tasks).await
-                .into_iter()
-                .collect::<Result<Vec<_>, _>>()?;
+            // let mycoin_objs = join_all(create_tasks).await
+            //     .into_iter()
+            //     .collect::<Result<Vec<_>, _>>()?;
 
             Ok::<_, anyhow::Error>(AMMSwapAccount {
                 account,
                 gas_objects: gas.clone(),
-                mycoin_obj_collect: mycoin_objs.iter().map(|obj| *obj).collect(),
-                mycoin_obj_amount_collect: mycoin_objs.iter().map(|_| rng.gen_range(SWAP_MIN_AMOUNT..SWAP_MAX_AMOUNT)).collect(),
+                mycoin_obj_collect: mycoin_obj_collect,
+                mycoin_obj_amount_collect: vec![amount/PICKUP_MAX_EACH_ACCOUNT; PICKUP_MAX_EACH_ACCOUNT as usize],
                 use_xbtc,
                 pickup_count: 0,
             })
@@ -269,7 +372,7 @@ async fn prepare_amm_swap_transactions(
         let account = &mut swap_accounts[rng.gen_range(0..account_num as usize)];
 
         if account.pickup_count >= PICKUP_MAX_EACH_ACCOUNT {
-            println!("account pickup max");
+            // println!("account pickup max");
             continue;
         }
         account.pickup_count = account.pickup_count + 1;
@@ -317,7 +420,7 @@ async fn prepare_amm_parallelization_swap_transactions(
         let account = &mut swap_accounts[rng.gen_range(0..account_num as usize)];
 
         if account.pickup_count >= PICKUP_MAX_EACH_ACCOUNT {
-            println!("account pickup max");
+            // println!("account pickup max");
             continue;
         }
         account.pickup_count = account.pickup_count + 1;
@@ -357,8 +460,39 @@ async fn prepare_amm_parallelization_swap_transactions(
 async fn benchmark_swap_transactions(
     client: &SuiAmmClient,
     transactions:Vec<RawTransactionData>,
+    use_amm_parallelization:bool,
 )-> Result<(), anyhow::Error> {
     let total_tx = transactions.len() as u32;
+
+    let latency_log_path = if use_amm_parallelization{
+        format!("../../results/latency_{}_amm_parallelization.log", total_tx)
+    }else{
+        format!("../../results/latency_{}_amm.log", total_tx)
+    };
+
+    let swap_event_log_path = if use_amm_parallelization{
+        format!("../../results/swap_event_{}_amm_parallelization.log", total_tx)
+    }else{
+        format!("../../results/swap_evente_{}_amm.log", total_tx)
+    };
+
+    let latency_log = Arc::new(AsyncMutex::new(
+        OpenOptions::new()
+            .write(true)
+            .create(true)
+            .truncate(true)
+            .open(&latency_log_path)?
+    ));
+    writeln!(latency_log.lock().await, "tx_hash,latency(ms)")?;
+    let swap_event_log = Arc::new(AsyncMutex::new(
+        OpenOptions::new()
+            .write(true)
+            .create(true)
+            .truncate(true)
+            .open(&swap_event_log_path)?
+    ));
+    writeln!(swap_event_log.lock().await, "tx_hash,pool_id,amount_x_in,amount_y_in,amount_x_out,amount_y_out,reserve_x,reserve_y,slippage")?;
+
     let start_time = Instant::now();
     let success = Arc::new(AtomicU32::new(0));
     let failure = Arc::new(AtomicU32::new(0));
@@ -369,23 +503,49 @@ async fn benchmark_swap_transactions(
         let success = Arc::clone(&success);
         let failure = Arc::clone(&failure);
 
+        let latency_log = Arc::clone(&latency_log);
+        let swap_event_log = Arc::clone(&swap_event_log);
+
         tasks.push(tokio::spawn(async move {
+            let submit_start = Instant::now();
             let resp = client.submit_tx(tx.tx, tx.sig).await;
+            let latency = submit_start.elapsed().as_millis();
             match resp {
                 Ok(tx_response) => {
                     if let Some(effects) = &tx_response.effects {
                         if effects.status().is_ok() {
                             success.fetch_add(1, Ordering::Relaxed);
+                            let swap_event = get_swap_event_log(&tx_response).unwrap();
+                            let latency_entry = format!("{},{}\n", tx_response.digest, latency);
+                            let swap_event_entry = format!(
+                                "{},{},{},{},{},{},{},{},{}\n",
+                                tx_response.digest,
+                                swap_event.pool_id,
+                                swap_event.amount_x_in,
+                                swap_event.amount_y_in,
+                                swap_event.amount_x_out,
+                                swap_event.amount_y_out,
+                                swap_event.reserve_x,
+                                swap_event.reserve_y,
+                                swap_event.slippage
+                            );
+                            let mut file = latency_log.lock().await;
+                            file.write_all(latency_entry.as_bytes()).ok();
+                            let mut file = swap_event_log.lock().await;
+                            file.write_all(swap_event_entry.as_bytes()).ok();
+
                         } else {
                             failure.fetch_add(1, Ordering::Relaxed);
                             println!("Transaction failed with status: {:?}", effects.status());
                         }
                     } else {
                         failure.fetch_add(1, Ordering::Relaxed);
+                        println!("Transaction failed : {:?}", tx_response);
                     }
                 }
                 Err(_) => {
                     failure.fetch_add(1, Ordering::Relaxed);
+                    println!("response failed : {:?}", resp);
                 }
             }
         }));
@@ -396,14 +556,14 @@ async fn benchmark_swap_transactions(
     }
 
     let duration = start_time.elapsed();
-    let tps = total_tx as f64 / duration.as_secs_f64();
+    let effective_tps = success.load(Ordering::Relaxed) as f64 / duration.as_secs_f64();
     
     println!("\n======== Benchmark Results ========");
     println!("Total transactions: {}", total_tx);
     println!("Successful transactions: {}", success.load(Ordering::Relaxed));
     println!("Failed transactions: {}", failure.load(Ordering::Relaxed));
     println!("Time elapsed: {:.2?}", duration);
-    println!("TPS: {:.2} transactions/s", tps);
+    println!("TPS: {:.2} transactions/s", effective_tps);
     println!("====================================\n");
 
 

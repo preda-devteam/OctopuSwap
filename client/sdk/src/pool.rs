@@ -206,6 +206,56 @@ impl SuiAmmClient{
         Ok(coin_obj)
     }
 
+    pub async fn get_mycoin_obj_and_split(
+        &self,
+        keypair:&SuiKeyPair,
+        mycoins_package_id: ObjectID,
+        gas: ObjectID, 
+        coin_manager: ObjectID, 
+        coin_type: &str, 
+        coin_amount: u64,
+        split_num: u64,
+    )-> Result<Vec<ObjectID>, anyhow::Error>{
+
+        let call_args = vec![
+            SuiJsonValue::from_object_id(coin_manager),       
+            SuiJsonValue::new(serde_json::Value::Number(coin_amount.into()))?,
+            SuiJsonValue::new(serde_json::Value::Number(split_num.into()))?,
+        ];
+        let type_args = vec![
+            SuiTypeTag::new(format!("{}::{}::{}",mycoins_package_id,MYCOIN_MODULE_NAME,coin_type).to_string()),      
+        ];
+        let transaction_response = self.invoke(keypair,mycoins_package_id, MYCOIN_MODULE_NAME, "mint_and_split", type_args, call_args,gas).await?;
+        // println!("{:?}",transaction_response);
+        let coin_obj = transaction_response.object_changes
+            .iter()
+            .flatten()
+            .filter_map(|change| match change {
+                ObjectChange::Created { object_type, object_id, .. } => {
+                    if  object_type.address == *ObjectID::from_str("0x2").unwrap() &&
+                        object_type.module.to_string() == "coin"  &&
+                        object_type.name.to_string() == "Coin" 
+                        {
+                            object_type.type_params.iter().find_map(|param| {
+                                if let Struct(inner_type) = param {
+                                    if inner_type.module.to_string() == MYCOIN_MODULE_NAME 
+                                        && inner_type.name.to_string() == coin_type 
+                                        && inner_type.address == *mycoins_package_id 
+                                    {
+                                        return Some(*object_id);
+                                    }
+                                }
+                                None
+                            })
+                        } else {
+                            None
+                        }
+                    }
+                    _ => None
+                })
+            .collect();
+        Ok(coin_obj)
+    }
     /////////////////////////////////////entry function invoke//////////////////////////////////
     pub async fn create_pool_amm(
         &self,

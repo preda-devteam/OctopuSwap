@@ -83,6 +83,8 @@ module dex::amm_parallelization{
         amount_y_out:u64,
         reserve_x: u64,
         reserve_y: u64,
+        reserve_x_estimate: u64,
+        reserve_y_estimate: u64,
     }
 
     public struct RebalanceEvent has drop,copy{
@@ -342,6 +344,8 @@ module dex::amm_parallelization{
             amount_y_out: coin_y_out,
             reserve_x: balance::value(&global_pool.coin_x),
             reserve_y: balance::value(&global_pool.coin_y),
+            reserve_x_estimate: pool_amount_x,
+            reserve_y_estimate: pool_amount_y,
         });
     }
 
@@ -370,6 +374,8 @@ module dex::amm_parallelization{
             amount_y_out: coin_y_out,
             reserve_x: balance::value(&shard_pool.coin_x),
             reserve_y: balance::value(&shard_pool.coin_y),
+            reserve_x_estimate: pool_amount_x,
+            reserve_y_estimate: pool_amount_y,
         });
     }
     
@@ -392,12 +398,14 @@ module dex::amm_parallelization{
         transfer::public_transfer(coin_out, tx_context::sender(ctx));
         emit(SwapEvent{
             pool_id: global_pool.id.to_address(),
-            amount_x_in: coin_y_in,
-            amount_y_in:  0,
-            amount_x_out: 0,
-            amount_y_out: coin_x_out,
+            amount_x_in: 0,
+            amount_y_in:  coin_y_in,
+            amount_x_out: coin_x_out,
+            amount_y_out: 0,
             reserve_x: balance::value(&global_pool.coin_x),
             reserve_y: balance::value(&global_pool.coin_y),
+            reserve_x_estimate: pool_amount_x,
+            reserve_y_estimate: pool_amount_y,
         });
     }
 
@@ -420,12 +428,14 @@ module dex::amm_parallelization{
         transfer::public_transfer(coin_out, tx_context::sender(ctx));
         emit(SwapEvent{
             pool_id: shard_pool.id.to_address(),
-            amount_x_in: coin_y_in,
-            amount_y_in:  0,
-            amount_x_out: 0,
-            amount_y_out: coin_x_out,
+            amount_x_in: 0,
+            amount_y_in:  coin_y_in,
+            amount_x_out: coin_x_out,
+            amount_y_out: 0,
             reserve_x: balance::value(&shard_pool.coin_x),
             reserve_y: balance::value(&shard_pool.coin_y),
+            reserve_x_estimate: pool_amount_x,
+            reserve_y_estimate: pool_amount_y,
         });
     }
 
