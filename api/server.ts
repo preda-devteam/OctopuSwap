@@ -23,8 +23,6 @@ app.get('/', async (req: Request, res: Response) => {
 });
 
 app.get('/price', async (req: Request, res: Response) => {
-	
-
 	try {
 		const acceptedQueries: WhereParam[] = [
 			{
@@ -37,20 +35,25 @@ app.get('/price', async (req: Request, res: Response) => {
 			},
 		];
 		const pools = await prisma.aMM.findMany({
-			where: parseWhereStatement(req.query, acceptedQueries),
+			where: parseWhereStatement(req.query, acceptedQueries)!,
 			...parsePaginationForQuery(req.query),
 		});
 
 		const globalPool = pools.filter(pool => pool.isGlobal === true)[0];
 		const subPools = pools.filter(pool => pool.isGlobal === false);
 		const order_pools = subPools.sort((a, b) => {
-			const priceA = Number(a.xAmount) / Number(a.yAmount);
-			const priceB = Number(b.xAmount) / Number(b.yAmount);
+			const priceA = Number(a.yAmount) / Number(a.xAmount);
+			const priceB = Number(b.yAmount) / Number(b.xAmount);
 			return priceA - priceB;
 		});
 
-		const bestPrice = (Number(order_pools[0].xAmount)*Number(globalPool.parallelism)+ Number(globalPool.xAmount)) / (Number(order_pools[0].yAmount)*Number(globalPool.parallelism) + Number(globalPool.yAmount));
-		res.send(formatPaginatedResponse([{"price": bestPrice, "pool_id": order_pools[0].poolId}]));
+		const bestPrice = (Number(order_pools[0].yAmount)*Number(globalPool.parallelism)+ Number(globalPool.yAmount)) / (Number(order_pools[0].xAmount)*Number(globalPool.parallelism) + Number(globalPool.xAmount));
+		const price_info = {
+			"price": bestPrice,
+			"sub_pool_id": order_pools[0].poolId,
+			"global_pool_id": globalPool.poolId,
+		}
+		res.send(formatPaginatedResponse([price_info]));
 	} catch (e) {
 		console.error(e);
 		res.status(400).send(e);

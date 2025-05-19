@@ -71,7 +71,7 @@ export const handleAMMObjects = async (events: SuiEvent[], type: string) => {
 		if (!event.type.startsWith(type)) throw new Error('Invalid event module origin');
 		console.log('Event:', event.type);
 		// AMM swap case
-		if (event.type.endsWith('::AMMSwapped')) {
+		if (event.type.endsWith('::SwapEvent')) {
 			const data = event.parsedJson as SwapEvent;
 			console.log('Swap event:', data);
 			updates[data.pool_id].poolId = data.pool_id;
