@@ -31,7 +31,7 @@ const XBTC: &str = "XBTC";
 
 const DEFAULT_GAS_BUDGET: u64 = 1000000000;
 
-
+#[derive(Clone)]
 pub struct SuiAmmClient{
     client: SuiClient
 }
@@ -273,22 +273,13 @@ impl SuiAmmClient{
         pool: ObjectID,
         coin_in: ObjectID,
         min_amount_out: u64,
-        is_global:bool,
         xbtc_to_xsui: bool,
         should_submit:bool,
     )->Result<ComposeOrSubmitTx, anyhow::Error>{
         let function_name = if xbtc_to_xsui { 
-            if is_global {
-                "swap_x_for_y_g"
-            }else{
-                "swap_x_for_y"
-            }
+            "swap_x_for_y"
         } else { 
-            if is_global {
-                "swap_y_for_x_g"
-            } else{
-                "swap_y_for_x"
-            }
+            "swap_y_for_x"
         };
         let call_args = vec![
             SuiJsonValue::from_object_id(pool),
@@ -653,7 +644,7 @@ impl SuiAmmClient{
             .quorum_driver_api()
             .execute_transaction_block(
                 Transaction::from_data(tx_data, vec![signature]),
-                SuiTransactionBlockResponseOptions::new().with_object_changes().with_effects(),
+                SuiTransactionBlockResponseOptions::new().with_object_changes().with_effects().with_events(),
                 Some(ExecuteTransactionRequestType::WaitForLocalExecution),
             )
             .await?;
@@ -700,10 +691,6 @@ impl SuiAmmClient{
     ) -> Result<ComposeOrSubmitTx, anyhow::Error> {
         if should_submit {
             let response = self.submit_tx(tx_data, signature).await?;
-            println!(
-                "===============Transactionresponse===========\n{:?}",
-                response
-            );
             Ok(ComposeOrSubmitTx::Submit(response))
         } else {
             Ok(ComposeOrSubmitTx::Compose(RawTransactionData{tx:tx_data, sig:signature}))
