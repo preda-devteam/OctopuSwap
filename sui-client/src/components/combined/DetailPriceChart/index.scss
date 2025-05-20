@@ -1,0 +1,28 @@
+#tv-attr-logo {
+  display: none !important;
+}
+
+.rc-select.rc-select-single {
+  opacity: 0;
+
+  .rc-select-selector .rc-select-selection-search-input {
+    cursor: pointer;
+  }
+}
+
+.rc-select-dropdown {
+  @apply bg-gray-8 border border-solid border-gray-5/30;
+
+  z-index: 999;
+}
+
+.rc-select-item-option-active {
+  @apply bg-gray-700;
+}
+
+.tool-seperator {
+  width: 1px;
+  height: 22px;
+
+  @apply mx-1 bg-[--color-opposite-bg];
+}

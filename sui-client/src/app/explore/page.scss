@@ -1,0 +1,13 @@
+.board {
+  padding: 30px;
+  @apply bg-gray-9 border-2 border-solid border-gray-9 rounded-sm;
+
+  & > h2 {
+    font-size: 28px;
+    @apply mb-5 text-white leading-9 font-medium;
+  }
+}
+
+.rank-avatar {
+  box-shadow: 0px 4px 4px 0px #0000001f;
+}

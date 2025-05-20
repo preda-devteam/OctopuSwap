@@ -1,0 +1,174 @@
+.thread {
+  max-height: 900px;
+  overflow-y: auto;
+  position: relative;
+
+  .thread-input {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: flex-start;
+    position: sticky;
+    z-index: 2;
+    top: 10px;
+
+    textarea {
+      border: 0;
+      outline: 0;
+      background: transparent;
+      resize: none;
+      flex: 1;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    button {
+      width: 84px;
+      height: 34px;
+    }
+  }
+
+  .thread-box {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(10px);
+    // transition: transform 0.3s ease-in-out;
+    // animation: toLeft 0.3s ease-in-out;
+  }
+
+  .thread-header {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 400;
+
+    img {
+      width: 20px;
+      height: 20px;
+      border-radius: 100%;
+      object-fit: cover;
+      border: 1px solid #E0C286;
+    }
+
+    .name {
+      margin: 0 5px;
+      color: #FFF;
+      max-width: 200px;
+      font-weight: 500;
+      line-height: 20px;
+    }
+
+    .addr {
+      color: #888;
+    }
+
+    .time {
+      flex: 1;
+      text-align: right;
+      color: #888;
+    }
+  }
+
+  .thread-content {
+    margin-top: 11px;
+    color: #FFF;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.14px;
+    word-break: break-all;
+  }
+}
+
+.activity {
+  max-height: 900px;
+  overflow-y: auto;
+  position: relative;
+  font-size: 14px;
+
+  .activity-item {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    color: #888;
+    padding: 10px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(10px);
+    // transition: transform 0.1s ease-in-out;
+    // animation: toRight 0.3s ease-in-out;
+
+    .avatr {
+      width: 40px;
+      height: 40px;
+      border-radius: 100%;
+      object-fit: cover;
+      margin-right: 6px;
+    }
+
+    .activity-info {
+      width: 90px;
+
+      .name {
+        max-width: 90px;
+        margin-bottom: 5px;
+        color: #FFF;
+        font-size: 14px;
+
+        font-weight: 500;
+        line-height: 20px;
+      }
+
+      .addr {
+        font-size: 14px;
+        font-weight: 400;
+      }
+    }
+
+    .vote-num {
+      font-size: 14px;
+      flex: 1;
+      padding-left: 23px;
+
+      span {
+        color: #FFF;
+      }
+    }
+
+    .time {
+      color: #FFF;
+      font-size: 14px;
+    }
+  }
+}
+
+@keyframes toLeft {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes toRight {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

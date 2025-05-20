@@ -1,0 +1,184 @@
+.favorite,
+.user-activity {
+  height: 100%;
+  overflow-y: auto;
+  position: relative;
+
+  .favorite-item,
+  .activity-item {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    color: #888;
+    width: 100%;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(10px);
+    padding: 12px;
+
+    &.unlike {
+      animation: toRightHide 0.5s ease-in-out forwards;
+    }
+
+    .like {
+      margin: 0 30px 0 8px;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .meta {
+      width: 64px;
+      height: 64px;
+      border-radius: 100%;
+      object-fit: cover;
+      margin-right: 12px;
+      border: 3px solid rgba(255, 255, 255, 0.80);
+    }
+
+    .info {
+      width: 100px;
+
+      .name {
+        max-width: 100px;
+        margin-bottom: 5px;
+        color: #FFF;
+        font-size: 18px;
+
+        font-weight: 500;
+        line-height: 20px;
+      }
+
+    }
+
+    .num {
+      font-size: 18px;
+      flex: 1;
+      padding: 0 10px;
+      text-align: right;
+      color: #FFF;
+      font-weight: 600;
+    }
+
+    .action {
+      color: #FFF;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 600;
+      padding-left: 74px;
+      width: 117px;
+    }
+
+    .result {
+      color: #FFF;
+      font-size: 18px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      align-items: flex-end;
+
+      .time {
+        color: #888;
+      }
+    }
+  }
+
+  .activity-item {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    color: #888;
+    padding: 10px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(10px);
+    // transition: transform 0.1s ease-in-out;
+    // animation: toRight 0.3s ease-in-out;
+
+    .avatr {
+      width: 40px;
+      height: 40px;
+      border-radius: 100%;
+      object-fit: cover;
+      margin-right: 6px;
+    }
+
+    .activity-info {
+      width: 90px;
+
+      .name {
+        max-width: 90px;
+        margin-bottom: 5px;
+        color: #FFF;
+        font-size: 14px;
+
+        font-weight: 500;
+        line-height: 20px;
+      }
+
+      .addr {
+        font-size: 14px;
+        font-weight: 400;
+      }
+    }
+
+    .vote-num {
+      font-size: 14px;
+      flex: 1;
+      padding-left: 23px;
+
+      span {
+        color: #FFF;
+      }
+    }
+
+    .time {
+      color: #FFF;
+      font-size: 14px;
+    }
+  }
+}
+
+.favorite {
+  // transition: transform 0.3s ease-in-out;
+  // animation: toLeft 0.3s ease-in-out;
+}
+
+.activity {
+  // transition: transform 0.3s ease-in-out;
+  // animation: toRight 0.3s ease-in-out;
+}
+
+@keyframes toRightHide {
+  0% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+    display: none;
+  }
+}
+
+@keyframes toLeft {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes toRight {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}

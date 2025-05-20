@@ -1,0 +1,25 @@
+.invite-code {
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(10px);
+  color: #FFF;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: 2.2px;
+  display: flex;
+  align-items: center;
+  height: 48px;
+  padding-left: 20px;
+  padding-right: 4px;
+
+  img {
+    margin-left: 10px;
+  }
+
+  button {
+    width: 98px;
+    position: absolute;
+    right: 0;
+  }
+}

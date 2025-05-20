@@ -1,0 +1,40 @@
+.wallet-select {
+  width: 308px;
+  padding: 24px;
+  border-radius: 24px;
+  gap: 24px;
+
+  .title {
+    width: 260px;
+    height: 42px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .option {
+    width: 260px;
+    height: 56px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 10px;
+    border: 1px solid #88888899
+  }
+
+  .img {
+    width: 42px;
+    height: 42px;
+    margin-left: 12px;
+  }
+
+  .desc {
+    margin-left: 22px;
+  }
+}

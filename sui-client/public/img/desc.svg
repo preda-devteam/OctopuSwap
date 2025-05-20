@@ -1,0 +1,14 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="DCaret">
+<path id="Vector" d="M10 17L15 11.1667H5L10 17ZM5 8.83333H15L10 3L5 8.83333Z" fill="#9C99AE" fill-opacity="0.5"/>
+<path id="Vector_2" d="M10 17L15 11.1667H5L10 17Z" fill="url(#paint0_linear_5519_57897)"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_5519_57897" x1="8.27273" y1="17" x2="16.0792" y2="14.3695" gradientUnits="userSpaceOnUse">
+<stop stop-color="#EB1484"/>
+<stop offset="0.9999" stop-color="#C91CC3"/>
+<stop offset="1" stop-color="#C81CC5"/>
+<stop offset="1" stop-color="#C81CC5"/>
+</linearGradient>
+</defs>
+</svg>
