@@ -1,0 +1,35 @@
+use_amm_parallelization:true...
+build: "/data/home/longbo/sui-demo/profiling/sdk/../../move_contracts/mycoins"...
+build: "/data/home/longbo/sui-demo/profiling/sdk/../../move_contracts/amm"...
+build: "/data/home/longbo/sui-demo/profiling/sdk/../../move_contracts/amm_parallelization"...
+pool_id:0x4864e747c8188a3d1513bcad5cd4afcb9dd38f2a14a6f599aefea0ad3629dc6e
+global_pool_id:0x968c8c534bc947af8d70a68a494517de042a5e9fb3158f323406298de9203ebf
+shard_pool_ids:[0x9ec08b00a4cd1684a88498452bf3cb402dda181130d7b4972ecfe1d3fb193146, 0x26b0428a489196864e018f64c3880effa3507c6cc37e8f36d22fd735a0d6d876, 0x2b2ac0f82e6c39559c081a9ec7160e0ec82b26eb48b333d371797240e2e46b2b, 0xe7eaf50ab6c96d539be701e7928d10095d2e36d8d2ada4d1eaf2ba652f6849cc]
+swap_accounts_amm len:799,prepare accounts elapse:1616.089096932,
+raw_transactions len:1955
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+Transaction failed with status: Failure { error: "ExecutionCancelledDueToSharedObjectCongestion { congested_objects: CongestedObjects([0x2b2ac0f82e6c39559c081a9ec7160e0ec82b26eb48b333d371797240e2e46b2b]) }" }
+Transaction failed with status: Failure { error: "ExecutionCancelledDueToSharedObjectCongestion { congested_objects: CongestedObjects([0x2b2ac0f82e6c39559c081a9ec7160e0ec82b26eb48b333d371797240e2e46b2b]) }" }
+Transaction failed with status: Failure { error: "ExecutionCancelledDueToSharedObjectCongestion { congested_objects: CongestedObjects([0x2b2ac0f82e6c39559c081a9ec7160e0ec82b26eb48b333d371797240e2e46b2b]) }" }
+Transaction failed with status: Failure { error: "ExecutionCancelledDueToSharedObjectCongestion { congested_objects: CongestedObjects([0x2b2ac0f82e6c39559c081a9ec7160e0ec82b26eb48b333d371797240e2e46b2b]) }" }
+Transaction failed with status: Failure { error: "ExecutionCancelledDueToSharedObjectCongestion { congested_objects: CongestedObjects([0x2b2ac0f82e6c39559c081a9ec7160e0ec82b26eb48b333d371797240e2e46b2b]) }" }
+
+======== Benchmark Results ========
+Total transactions: 1955
+Successful transactions: 1947
+Failed transactions: 8
+Time elapsed: 5.72s
+TPS: 340.17 transactions/s
+====================================
+

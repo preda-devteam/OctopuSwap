@@ -1,0 +1,278 @@
+use_amm_parallelization:true...
+build: "/data/home/longbo/sui-demo/client/sdk/../../move_contracts/mycoins"...
+build: "/data/home/longbo/sui-demo/client/sdk/../../move_contracts/amm"...
+build: "/data/home/longbo/sui-demo/client/sdk/../../move_contracts/amm_parallelization"...
+pool_id:0x8964bf6d2dadeb16d9ae103f9dd196ca9198e1f0a8d2d44e148e4a2c7294e948
+global_pool_id:0x2d728f006bc855d6ee72d534fd3c03fc93afad805fd12b4f1e5bc177621ce922
+shard_pool_ids:[0xcdc142a9e65763f2d3d4a913e840395886f0213c3c370ab406bd2f4524f4b633, 0xcd2065a8efd15ced1c9d81c51f029cbd694870509852056ddb5ff0935a42356b, 0x29213c1ccd8d1b28b870b54e60d5cafc24262fd1294afa376f354e3072fb3abd, 0xab8a321e28ea1c8122257cfa907718a813a375bb31eeb9a523245ff251677395]
+swap_accounts_amm len:399,prepare accounts elapse:783.778860795,
+raw_transactions len:975
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+response failed : Err(ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None }
+
+Caused by:
+    ErrorObject { code: ServerError(-32050), message: "Transaction is not processed because 7500 of validators by stake are overloaded with certificates pending execution.", data: None })
+
+======== Benchmark Results ========
+Total transactions: 975
+Successful transactions: 910
+Failed transactions: 65
+Time elapsed: 3.72s
+TPS: 244.58 transactions/s
+====================================
+

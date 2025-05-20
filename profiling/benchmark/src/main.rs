@@ -310,7 +310,6 @@ async fn prepare_swap_accounts_parallel(
             let account_address = SuiAddress::from(&account.public());
             let gas = client.get_gas(&account_address, PICKUP_MAX_EACH_ACCOUNT).await?;
             let use_xbtc = rng.gen_bool(0.5);
-            println!("use_xbtc:{}",use_xbtc);
             let call_gas = gas[0];
             let amount = rng.gen_range(SWAP_MIN_AMOUNT..SWAP_MAX_AMOUNT);
             let mycoin_obj_collect = if use_xbtc {
@@ -465,15 +464,15 @@ async fn benchmark_swap_transactions(
     let total_tx = transactions.len() as u32;
 
     let latency_log_path = if use_amm_parallelization{
-        format!("../../results/latency_{}_amm_parallelization.log", total_tx)
+        format!("../results/latency_{}_amm_parallelization.log", total_tx)
     }else{
-        format!("../../results/latency_{}_amm.log", total_tx)
+        format!("../results/latency_{}_amm.log", total_tx)
     };
 
     let swap_event_log_path = if use_amm_parallelization{
-        format!("../../results/swap_event_{}_amm_parallelization.log", total_tx)
+        format!("../results/swap_event_{}_amm_parallelization.log", total_tx)
     }else{
-        format!("../../results/swap_evente_{}_amm.log", total_tx)
+        format!("../results/swap_evente_{}_amm.log", total_tx)
     };
 
     let latency_log = Arc::new(AsyncMutex::new(
