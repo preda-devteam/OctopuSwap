@@ -10,7 +10,7 @@ module dex::xbtc{
         transfer::public_transfer(treasury, tx_context::sender(ctx))
     }
 
-    public fun mint(
+    public entry fun mint(
         treasury_cap: &mut TreasuryCap<XBTC>,
 		amount: u64,
 		recipient: address,

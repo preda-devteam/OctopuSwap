@@ -9,7 +9,7 @@ module dex::xsui{
         transfer::public_transfer(treasury, tx_context::sender(ctx))
     }
 
-    public fun mint(
+    public entry fun mint(
         treasury_cap: &mut TreasuryCap<XSUI>,
 		amount: u64,
 		recipient: address,
