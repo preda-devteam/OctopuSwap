@@ -1,4 +1,4 @@
-# Escrow API Demo
+# AMM API Demo
 
 This demo is built to showcase how we can build an event indexer + API
 to efficiently serve on-chain data for our app.
@@ -30,7 +30,7 @@ pnpm db:setup:dev
 pnpm dev
 ```
 
-5. Visit [http://localhost:3000/escrows](http://localhost:3000/escrows) or [http://localhost:3000/locked](http://localhost:3000/locked)
+5. Visit [http://localhost:3030/](http://localhost:3000/)
 
 ## Demo Data<a name="demo-data"></a>
 
@@ -49,16 +49,15 @@ To produce demo data:
 npx ts-node helpers/publish-contracts.ts
 ```
 
-2. Produce demo non-locked and locked objects
+2. Create a pool
 
 ```
-npx ts-node helpers/create-demo-data.ts
+npx ts-node helpers/create-pool.ts
 ```
 
-3. Produce demo escrows
-
+3. Call swap on the pool
 ```
-npx ts-node helpers/create-demo-escrows.ts
+npx ts-node helpers/swap.ts
 ```
 
 If you want to reset the database (start from scratch), run:
@@ -71,42 +70,44 @@ pnpm db:reset:dev && pnpm db:setup:dev
 
 The API exposes data written from the event indexer.
 
-For each request, we have pagination with a max limit of 50 per page.
-
-| Parameter | Expected value  |
-| --------- | --------------- |
-| limit     | number (1-50)   |
-| cursor    | number          |
-| sort      | 'asc' \| 'desc' |
-
-There are two available routes:
-
-### `/locked`: Returns indexed locked objects
+### `/price`: Return the current price of the pool
 
 Available query parameters:
 
 | Parameter | Expected value    |
 | --------- | ----------------- |
-| deleted   | 'true' \| 'false' |
-| keyId     | string            |
-| creator   | string            |
+| xName     | 08d71cfac5dd38feb804ab34442cadffb46ed3920b36e608b4786d412ab91762::mycoins::XBTC |
+| yName     | 08d71cfac5dd38feb804ab34442cadffb46ed3920b36e608b4786d412ab91762::mycoins::XSUI |
 
-### `/escrows`: Returns indexed escrow objects
+### `/getAmountOut`: Returns swapped amount out
 
 Available query parameters:
 
 | Parameter | Expected value    |
 | --------- | ----------------- |
-| cancelled | 'true' \| 'false' |
-| swapped   | 'true' \| 'false' |
-| recipient | string            |
-| sender    | string            |
+| xName     | 08d71cfac5dd38feb804ab34442cadffb46ed3920b36e608b4786d412ab91762::mycoins::XBTC |
+| yName     | 08d71cfac5dd38feb804ab34442cadffb46ed3920b36e608b4786d412ab91762::mycoins::XSUI |
+| yAmountIn | 100000000 |
 
-> Example Query: Get only active escrows for address (5 per page)
-> `0xfe09cf0b3d77678b99250572624bf74fe3b12af915c5db95f0ed5d755612eb68`
+Example:
 
 ```
-curl --location 'http://localhost:3000/escrows?limit=5&recipient=0xfe09cf0b3d77678b99250572624bf74fe3b12af915c5db95f0ed5d755612eb68&cancelled=false&swapped=false'
+curl 'http://localhost:3030/getAmountOut?xName=08d71cfac5dd38feb804ab34442cadffb46ed3920b36e608b4786d412ab91762::mycoins::XBTC&yName=08d71cfac5dd38feb804ab34442cadffb46ed3920b36e608b4786d412ab91762::mycoins::XSUI&yAmountIn=100000000'
+```
+### `/getAmountIn`: Returns swapped amount in
+
+Available query parameters:
+
+| Parameter | Expected value    |
+| --------- | ----------------- |
+| xName     | 08d71cfac5dd38feb804ab34442cadffb46ed3920b36e608b4786d412ab91762::mycoins::XBTC |
+| yName     | 08d71cfac5dd38feb804ab34442cadffb46ed3920b36e608b4786d412ab91762::mycoins::XSUI |
+| xAmountOut | 100000000 |
+
+Example:
+
+```
+curl 'http://localhost:3030/getAmountIn?xName=08d71cfac5dd38feb804ab34442cadffb46ed3920b36e608b4786d412ab91762::mycoins::XBTC&yName=08d71cfac5dd38feb804ab34442cadffb46ed3920b36e608b4786d412ab91762::mycoins::XSUI&xAmountOut=100000000'
 ```
 
 ## Event Indexer

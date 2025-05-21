@@ -4,3 +4,4 @@ demo-contract.json
 escrow-contract.json
 node_modules
 package-lock.json
+pnpm-lock.yaml

@@ -1,8 +1,9 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: Apache-2.0
 import { readFileSync } from 'fs';
-
 import { Network } from './sui-utils';
+import dotenv from "dotenv";
+dotenv.config()
 
 /// We assume our config files are in the format: { "packageId": "0x..." }
 const parseConfigurationFile = (fileName: string) => {
@@ -24,5 +25,5 @@ export const CONFIG = {
 	DEFAULT_LIMIT: 50,
 	NETWORK: (process.env.NETWORK as Network) || 'localnet',
 	COIN_CONTRACT: parseConfigurationFile('coin-contract'),
-	SWAP_CONTRACT: parseConfigurationFile('amm-contract'),
+	AMM_CONTRACT: parseConfigurationFile('amm-contract'),
 };

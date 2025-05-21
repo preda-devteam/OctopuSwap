@@ -74,9 +74,11 @@ export const handleAMMObjects = async (events: SuiEvent[], type: string) => {
 		if (event.type.endsWith('::SwapEvent')) {
 			const data = event.parsedJson as SwapEvent;
 			console.log('Swap event:', data);
-			updates[data.pool_id].poolId = data.pool_id;
-			updates[data.pool_id].xAmount = data.reserve_x;
-			updates[data.pool_id].yAmount = data.reserve_y;
+			updates[data.pool_id] = {
+				poolId: data.pool_id,
+				xAmount: data.reserve_x,
+				yAmount: data.reserve_y,
+			}
 			continue;
 		}
 		if (event.type.endsWith('::CreateEvent')) {
@@ -97,25 +99,36 @@ export const handleAMMObjects = async (events: SuiEvent[], type: string) => {
 		if (event.type.endsWith('::MintEvent')) {
 			const data = event.parsedJson as MintEvent;
 			console.log('Mint event:', data);
-			updates[data.pool_id].poolId = data.pool_id;
-			updates[data.pool_id].xAmount = data.reserve_x;
-			updates[data.pool_id].yAmount = data.reserve_y;
+			updates[data.pool_id] = {
+				poolId: data.pool_id,
+				xAmount: data.reserve_x,
+				yAmount: data.reserve_y,
+			}
 			continue;
 		}
 		if (event.type.endsWith('::BurnEvent')) {
 			const data = event.parsedJson as BurnEvent;
 			console.log('Burn event:', data);
-			updates[data.pool_id].poolId = data.pool_id;
-			updates[data.pool_id].xAmount = data.reserve_x;
-			updates[data.pool_id].yAmount = data.reserve_y;
+			updates[data.pool_id] = {
+				poolId: data.pool_id,
+				xAmount: data.reserve_x,
+				yAmount: data.reserve_y,
+			}
 			continue;
 		}
 		if (event.type.endsWith('::RebalanceEvent')) {
 			const data = event.parsedJson as RebalanceEvent;
 			console.log('Rebalance event:', data);
-			updates[data.shard_pool_id].poolId = data.shard_pool_id;
-			updates[data.shard_pool_id].xAmount = data.reserve_x;
-			updates[data.shard_pool_id].yAmount = data.reserve_y;
+			updates[data.global_pool_id] = {
+				poolId: data.global_pool_id,
+				xAmount: data.reserve_x_g,
+				yAmount: data.reserve_y_g,
+			}
+			updates[data.shard_pool_id] = {
+				poolId: data.shard_pool_id,
+				xAmount: data.reserve_x,
+				yAmount: data.reserve_y,
+			}
 			continue;
 		}
 	}

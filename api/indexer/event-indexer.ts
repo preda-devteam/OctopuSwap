@@ -24,11 +24,11 @@ type EventTracker = {
 
 const EVENTS_TO_TRACK: EventTracker[] = [
 	{
-		type: `${CONFIG.SWAP_CONTRACT.packageId}::amm_parallelization`,
+		type: `${CONFIG.AMM_CONTRACT.packageId}::amm_parallelization`,
 		filter: {
 			MoveEventModule: {
 				module: 'amm_parallelization',
-				package: CONFIG.SWAP_CONTRACT.packageId,
+				package: CONFIG.AMM_CONTRACT.packageId,
 			},
 		},
 		callback: handleAMMObjects,
