@@ -1,12 +1,19 @@
 "use client";
 import Button from "@/components/base/Button";
 import Select, { OptProps, Selected } from "@/components/base/Select";
-import { PACKAGE_ID, TOKEN_TYPE, XBTC_TYPE, XSUI_TYPE } from "@/constants";
+import {
+  PACKAGE_ID_Devnet,
+  PACKAGE_ID_Testnet,
+  TOKEN_TYPE,
+  XBTC_TYPE_Devnet,
+  XBTC_TYPE_Testnet,
+  XSUI_TYPE_Devnet,
+  XSUI_TYPE_Testnet,
+} from "@/constants";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   ChangeEventHandler,
-  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -70,19 +77,42 @@ const SwapForm = (props: SwapFormProps) => {
   const [isBlockTrading, setIsBlockTrading] = useState(false);
   const [netGasFees, setNetGasFees] = useState<string | null>(null);
 
-  const client = new SuiClient({ url: "https://fullnode.devnet.sui.io:443" });
   const wallet: any = useWallet();
+  const chain = wallet?.chain;
+  
+  const isDevnet = chain?.id.includes("devnet");
+  const isTestnet = chain?.id.includes("testnet");
+
+  const url = isDevnet
+    ? "https://fullnode.devnet.sui.io:443"
+    : isTestnet
+    ? "https://fullnode.testnet.sui.io:443"
+    : "";
+  const package_id = isDevnet
+    ? PACKAGE_ID_Devnet
+    : isTestnet
+    ? PACKAGE_ID_Testnet
+    : "";
+
+  const xsui_type = isDevnet ? XSUI_TYPE_Devnet : XSUI_TYPE_Testnet;
+  const xbtc_type = isDevnet ? XBTC_TYPE_Devnet : XBTC_TYPE_Testnet;
+
+  const client = new SuiClient({ url: url });
 
   async function getAllBalances(address: string) {
+    console.log("getAllBalances", address);
     if (!address) return;
 
     const balances = await client.getAllBalances({ owner: address });
+    console.log("balances", balances);
+    console.log("xsui", xsui_type);
+    console.log("xbtc", xbtc_type);
 
     balances.map((balance) => {
       const coinType = balance.coinType;
-      if (coinType === XSUI_TYPE) {
+      if (coinType === xsui_type) {
         setXSuiBalance(toTokenAmount(balance.totalBalance, "", 9));
-      } else if (coinType === XBTC_TYPE) {
+      } else if (coinType === xbtc_type) {
         setXBTBalance(toTokenAmount(balance.totalBalance, "", 9));
       }
     });
@@ -164,13 +194,17 @@ const SwapForm = (props: SwapFormProps) => {
       l1token: selectL1TokenName,
       phase: TOKEN_TYPE.SWAP,
       l1tokenin: toAmountToken(1, selectL1TokenName),
+      isDevnet,
+      isTestnet,
     });
-  const { getData: loadInExchange, reload: reloadInExchange } =
+  const { getData: loadInExchange } =
     useAsyncTokenExchangeIn({
       tokenaddress: selectToken.toString(),
       l1token: selectL1TokenName,
       phase: TOKEN_TYPE.SWAP,
       l1tokenin: toAmountToken(1, selectL1TokenName),
+      isDevnet,
+      isTestnet,
     });
 
   const l1InputRef = useRef<HTMLInputElement>(null);
@@ -187,6 +221,7 @@ const SwapForm = (props: SwapFormProps) => {
     const coinXObjectId = await getXObjectId(rawAddress as string, type);
     const [coin] = tx.splitCoins(coinXObjectId as string, [amountIn]);
 
+
     const swap_func = !swapType
       ? isBlockTrading
         ? "swap_x_for_y_g"
@@ -196,14 +231,14 @@ const SwapForm = (props: SwapFormProps) => {
       : "swap_y_for_x";
 
     tx.moveCall({
-      target: `${PACKAGE_ID}::amm_parallelization::${swap_func}`,
+      target: `${package_id}::amm_parallelization::${swap_func}`,
       arguments: [
         tx.object(globalPoolId || ""),
         tx.object(subPoolId || ""),
         tx.object(coin),
         tx.pure.u64(0),
       ],
-      typeArguments: [XBTC_TYPE, XSUI_TYPE],
+      typeArguments: [xbtc_type, xsui_type],
     });
 
     const result = await client.devInspectTransactionBlock({
@@ -228,9 +263,9 @@ const SwapForm = (props: SwapFormProps) => {
 
   useEffect(() => {
     if (!swapType && l1InputAmount && +l1InputAmount) {
-      getGasFee(l1InputAmount, swapType as number, XBTC_TYPE);
+      getGasFee(l1InputAmount, swapType as number, xbtc_type);
     } else if (swapType && l1InputAmount && +l1InputAmount) {
-      getGasFee(l2InputAmount, swapType, XSUI_TYPE);
+      getGasFee(l2InputAmount, swapType, xsui_type);
     }
   }, [swapType, l1InputAmount, l2InputAmount, netGasFees]);
 
@@ -560,7 +595,7 @@ const SwapForm = (props: SwapFormProps) => {
     let coinXObjectId = "";
     const coins = await client.getCoins({
       owner: rawAddress,
-      coinType: XBTC_TYPE,
+      coinType: xbtc_type,
     });
 
     if (coins.data.length === 0) {
@@ -588,7 +623,7 @@ const SwapForm = (props: SwapFormProps) => {
     const [coin] = tx.splitCoins(coinXObjectId as string, [amountIn]);
 
     tx.moveCall({
-      target: `${PACKAGE_ID}::amm_parallelization::${
+      target: `${package_id}::amm_parallelization::${
         isBlockTrading ? "swap_x_for_y_g" : "swap_x_for_y"
       }`,
       arguments: [
@@ -597,10 +632,10 @@ const SwapForm = (props: SwapFormProps) => {
         tx.object(coin),
         tx.pure.u64(0),
       ],
-      typeArguments: [XBTC_TYPE, XSUI_TYPE],
+      typeArguments: [xbtc_type, xsui_type],
     });
 
-    const result = await wallet.signAndExecuteTransactionBlock({
+    await wallet.signAndExecuteTransactionBlock({
       transactionBlock: tx,
       options: {
         showEffects: true,
@@ -621,7 +656,7 @@ const SwapForm = (props: SwapFormProps) => {
     let coinXObjectId = "";
     const coins = await client.getCoins({
       owner: rawAddress,
-      coinType: XSUI_TYPE,
+      coinType: xsui_type,
     });
 
     if (coins.data.length === 0) {
@@ -649,7 +684,7 @@ const SwapForm = (props: SwapFormProps) => {
     const [coin] = tx.splitCoins(coinXObjectId as string, [amountIn]);
 
     tx.moveCall({
-      target: `${PACKAGE_ID}::amm_parallelization::${
+      target: `${package_id}::amm_parallelization::${
         isBlockTrading ? "swap_y_for_x_g" : "swap_y_for_x"
       }`,
       arguments: [
@@ -658,7 +693,7 @@ const SwapForm = (props: SwapFormProps) => {
         tx.object(coin),
         tx.pure.u64(0),
       ],
-      typeArguments: [XBTC_TYPE, XSUI_TYPE],
+      typeArguments: [xbtc_type, xsui_type],
     });
 
     const result = await wallet.signAndExecuteTransactionBlock({
