@@ -1,8 +1,5 @@
-export const DEFAULT_TOKEN_ICON = "/img/not-found.svg";
-export const DEFAULT_ADDRESS_ICON = "/img/default-address.png";
 export const DEFAULT_HEADER_ICON = "/img/sui.png";
 export const PREPARE = "Coming Soon";
-export const FINISHED = "Finished";
 export enum TOKEN_TYPE {
   VOTE = "vote",
   LAUNCH = "launch",

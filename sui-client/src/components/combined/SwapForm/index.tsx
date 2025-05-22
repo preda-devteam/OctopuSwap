@@ -14,36 +14,21 @@ import {
 } from "react";
 import clss from "classnames";
 import "./index.scss";
-import { useDioxAddressContext } from "@/hooks/useDioxAddress";
-import { useDioxContext } from "@/hooks/useDiox";
 import toasty from "@/components/base/Toast";
 import { TokenSwapTrade } from "@/dataApi/Token";
 import {
   useAsyncTokenExchangeIn,
   useAsyncTokenExchangeOut,
-  useTokenPrice,
 } from "@/hooks/useToken";
 import {
   bignumberDiv,
-  bignumberMult,
   isAmount,
   toAmountToken,
-  toEffectFixed,
   toFixed,
   toFixedInputAmount,
-  token2Decimals,
   toTokenAmount,
 } from "@/utils/string";
-import { useMetaMask } from "@/hooks/useMetaMask";
-import {
-  useUserL1Balance,
-  useUserTokenBalance,
-  useGetDIOGas,
-} from "@/hooks/useUser";
 import BigNumber from "bignumber.js";
-import useBeepay from "@/hooks/useBeepay";
-import { usePhantom } from "@/hooks/usePhantom";
-import { useOKX } from "@/hooks/useOKX";
 import { ConnectButton, useWallet } from "@suiet/wallet-kit";
 import { useWalletAddress } from "@/hooks/WalletContext";
 import { SuiClient } from "@mysten/sui/client";
@@ -164,10 +149,6 @@ const SwapForm = (props: SwapFormProps) => {
     defaultL1Token || l1TokenTradeOptions?.[0]?.value || "XBTC"
   );
   const selectL1TokenName = selectL1Token.toString();
-  const { data: tokenPrice, reload: reloadTokenPrice } = useTokenPrice({
-    tokenaddress: selectToken as string,
-    l1token: selectL1Token as string,
-  });
 
   const currentTokenData = useMemo(() => {
     const token = tokenList.find(
@@ -251,7 +232,7 @@ const SwapForm = (props: SwapFormProps) => {
     } else if (swapType && l1InputAmount && +l1InputAmount) {
       getGasFee(l2InputAmount, swapType, XSUI_TYPE);
     }
-  }, [swapType, l1InputAmount, l2InputAmount, netGasFees, tokenPrice]);
+  }, [swapType, l1InputAmount, l2InputAmount, netGasFees]);
 
   useEffect(() => {
     if (selectToken) {

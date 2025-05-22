@@ -24,7 +24,6 @@ export const viewport: Viewport = {
 function Layout({ children }: { children: React.ReactElement }) {
   return (
     <html lang="en">
-      <link rel="icon" href="/img/favicon.ico" sizes="any" />
       <body>
         <Script src="/js/icon.min.js" strategy="beforeInteractive"></Script>
         <WalletWrapper>
