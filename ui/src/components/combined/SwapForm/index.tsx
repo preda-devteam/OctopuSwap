@@ -1,12 +1,17 @@
 "use client";
 import Button from "@/components/base/Button";
 import Select, { OptProps, Selected } from "@/components/base/Select";
-import { PACKAGE_ID, TOKEN_TYPE, XBTC_TYPE, XSUI_TYPE } from "@/constants";
+import {
+  PACKAGE_ID_Devnet,
+  PACKAGE_ID_Testnet,
+  TOKEN_TYPE,
+  XBTC_TYPE,
+  XSUI_TYPE,
+} from "@/constants";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   ChangeEventHandler,
-  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -70,8 +75,22 @@ const SwapForm = (props: SwapFormProps) => {
   const [isBlockTrading, setIsBlockTrading] = useState(false);
   const [netGasFees, setNetGasFees] = useState<string | null>(null);
 
-  const client = new SuiClient({ url: "https://fullnode.devnet.sui.io:443" });
   const wallet: any = useWallet();
+  const chain = wallet?.chain;
+  const isDevnet = chain?.id.includes("devnet");
+  const isTestnet = chain?.id.includes("testnet");
+  const url = isDevnet
+    ? "https://fullnode.devnet.sui.io:443"
+    : isTestnet
+    ? "https://fullnode.testnet.sui.io:443"
+    : "";
+  const package_id = isDevnet
+    ? PACKAGE_ID_Devnet
+    : isTestnet
+    ? PACKAGE_ID_Testnet
+    : "";
+
+  const client = new SuiClient({ url: url });
 
   async function getAllBalances(address: string) {
     if (!address) return;
@@ -196,7 +215,7 @@ const SwapForm = (props: SwapFormProps) => {
       : "swap_y_for_x";
 
     tx.moveCall({
-      target: `${PACKAGE_ID}::amm_parallelization::${swap_func}`,
+      target: `${package_id}::amm_parallelization::${swap_func}`,
       arguments: [
         tx.object(globalPoolId || ""),
         tx.object(subPoolId || ""),
@@ -588,7 +607,7 @@ const SwapForm = (props: SwapFormProps) => {
     const [coin] = tx.splitCoins(coinXObjectId as string, [amountIn]);
 
     tx.moveCall({
-      target: `${PACKAGE_ID}::amm_parallelization::${
+      target: `${package_id}::amm_parallelization::${
         isBlockTrading ? "swap_x_for_y_g" : "swap_x_for_y"
       }`,
       arguments: [
@@ -649,7 +668,7 @@ const SwapForm = (props: SwapFormProps) => {
     const [coin] = tx.splitCoins(coinXObjectId as string, [amountIn]);
 
     tx.moveCall({
-      target: `${PACKAGE_ID}::amm_parallelization::${
+      target: `${package_id}::amm_parallelization::${
         isBlockTrading ? "swap_y_for_x_g" : "swap_y_for_x"
       }`,
       arguments: [
