@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'XREI',
+      name: 'OctopuSwap',
       script: 'server/index.js',
       autorestart: true,
       max_restarts: 20,

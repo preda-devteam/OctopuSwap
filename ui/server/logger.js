@@ -43,5 +43,5 @@ configure({
   pm2InstanceVar: 'INSTANCE_ID',
 })
 
-exports.logger = getLogger('XREI')
+exports.logger = getLogger('OctopuSwap')
 exports.shutdown = shutdown

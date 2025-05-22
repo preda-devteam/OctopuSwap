@@ -11,8 +11,11 @@ day.extend(relativeTime);
 day.extend(utc);
 
 export const metadata: Metadata = {
-  title: "XREI",
-  description: "XREI",
+  title: "OctopuSwap",
+  description: "OctopuSwap",
+  icons: {
+    icon: "/img/favicon.png",
+  },
 };
 export const viewport: Viewport = {
   width: "device-width",
@@ -24,11 +27,12 @@ export const viewport: Viewport = {
 function Layout({ children }: { children: React.ReactElement }) {
   return (
     <html lang="en">
+      <link rel="icon" href="/img/favicon.png" sizes="any" />
       <body>
         <Script src="/js/icon.min.js" strategy="beforeInteractive"></Script>
         <WalletWrapper>
           <>
-            <Header  />
+            <Header />
             {children}
           </>
         </WalletWrapper>
