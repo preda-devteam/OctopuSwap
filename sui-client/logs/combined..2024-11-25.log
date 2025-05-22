@@ -1,0 +1,4 @@
+[2024-11-25T10:38:19.999] [INFO] XREI - > Ready on http://localhost:30091
+[2024-11-25T10:39:39.263] [INFO] XREI - > Ready on http://localhost:30091
+[2024-11-25T11:00:30.711] [WARN] XREI - Server on error: ECONNRESET
+[2024-11-25T11:00:30.724] [WARN] XREI - Server on error: ECONNRESET

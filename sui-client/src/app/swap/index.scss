@@ -1,0 +1,19 @@
+.swap-page {
+  display: flex;
+  align-items: center;
+  gap: 38px;
+  flex-wrap: wrap;
+
+  .back {
+    margin-right: 80%;
+  }
+
+  .swap-chart {
+    width: 700px;
+    height: 567px;
+    border-radius: 16.186px;
+    border: 1.619px rgba(96, 96, 100, 0.30);
+    background: #2D2E36;
+    margin-left: 45px;
+  }
+}

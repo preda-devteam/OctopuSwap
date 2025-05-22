@@ -1,0 +1,13 @@
+<svg width="33" height="32" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="ri:swap-fill">
+<path id="Vector" d="M16.5067 29.3373C9.14267 29.3373 3.17334 23.368 3.17334 16.004C3.17334 8.63999 9.14267 2.67065 16.5067 2.67065C23.8707 2.67065 29.84 8.63999 29.84 16.004C29.84 23.368 23.8707 29.3373 16.5067 29.3373ZM9.84001 12.004H12.5067V17.3373H15.1733V12.004H17.84L13.84 7.33732L9.84001 12.004ZM23.1733 20.004H20.5067V14.6707H17.84V20.004H15.1733L19.1733 24.6707L23.1733 20.004Z" fill="url(#paint0_linear_3662_140278)"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_3662_140278" x1="11.9006" y1="2.67065" x2="34.2193" y2="7.05762" gradientUnits="userSpaceOnUse">
+<stop stop-color="#EB1484"/>
+<stop offset="0.9999" stop-color="#C91CC3"/>
+<stop offset="1" stop-color="#C81CC5"/>
+<stop offset="1" stop-color="#C81CC5"/>
+</linearGradient>
+</defs>
+</svg>

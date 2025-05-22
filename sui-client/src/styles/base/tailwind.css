@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+
+  .linear-font {
+    background: var(--linear-gradient);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .linear-bg {
+    background: var(--linear-gradient);
+  }
+
+  .diox-font {
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
+    overflow: hidden;
+  }
+
+  .fill-width {
+    width: 100%;
+    min-width: var(--container-width);
+  }
+}
+
+@layer components {
+  .rank-king {
+    background: url('/img/rank-king.svg') center no-repeat;
+    background-size: cover;
+  }
+
+  .rank-other {
+    background: url('/img/rank-other.svg') center no-repeat;
+    background-size: cover;
+  }
+}

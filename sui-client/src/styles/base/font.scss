@@ -1,0 +1,31 @@
+// Poppins
+@font-face {
+  font-family: 'PoppinsLight';
+  src: url('/fonts/Poppins/Poppins-Light.ttf');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/Poppins/Poppins-Regular.ttf');
+}
+
+// Roboto Mono
+@font-face {
+  font-family: 'RobotoMono';
+  src: url('/fonts/RobotoMono/RobotoMono-Regular.ttf');
+}
+
+// ====== sourcehansanscn end ========
+
+$fontfallback: system-ui, -apple-system, BlinkMacSystemFont, Helvetica, 'PingFang SC', SCHeiti, 'Microsoft YaHei',
+  sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+// ======= menlon font class ========
+.font-poppins {
+  font-family: Poppins, $fontfallback;
+}
+
+// ======= mono ========
+.font-mono {
+  font-family: RobotoMono, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+}
