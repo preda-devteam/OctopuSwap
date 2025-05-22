@@ -13,16 +13,10 @@ import { ConnectButton, useWallet } from "@suiet/wallet-kit";
 
 export default function Header() {
   const pathname = usePathname();
-  const { address, rawAddress } = useWalletAddress();
-  const [isReady, setIsReady] = useState(false);
+
+  const { address } = useWalletAddress();
 
   const wallet: any = useWallet();
-
-  useEffect(() => {
-    if (address) {
-      setIsReady(true);
-    }
-  }, [address]);
 
   return (
     <header>
@@ -44,31 +38,27 @@ export default function Header() {
             Swap
           </Linker>
         </nav>
-        {isReady ? (
-          address ? (
-            <Linker href={""} className="address-box">
-              <img src={DEFAULT_HEADER_ICON} alt="addr" />
-              <div className="info" style={{ textAlign: "center" }}>
-                <p className="name line-clamp">{wallet?.name || "--"}</p>
-                <p className="font-mono">
-                  {seesaw({ raw: address, isAddress: true })}
-                </p>
-              </div>
-            </Linker>
-          ) : (
-            <ConnectButton
-              className="linear-bg"
-              style={{
-                fontFamily: "Poppins",
-                fontSize: "14px",
-                width: "160px",
-              }}
-            >
-              Connect Wallet
-            </ConnectButton>
-          )
+        {address ? (
+          <Linker href={""} className="address-box">
+            <img src={DEFAULT_HEADER_ICON} alt="addr" />
+            <div className="info" style={{ textAlign: "center" }}>
+              <p className="name line-clamp">{wallet?.name || "--"}</p>
+              <p className="font-mono">
+                {seesaw({ raw: address, isAddress: true })}
+              </p>
+            </div>
+          </Linker>
         ) : (
-          <div style={{ width: "160px", height: "40px" }} />
+          <ConnectButton
+            className="linear-bg"
+            style={{
+              fontFamily: "Poppins",
+              fontSize: "14px",
+              width: "160px",
+            }}
+          >
+            Connect Wallet
+          </ConnectButton>
         )}
       </div>
     </header>

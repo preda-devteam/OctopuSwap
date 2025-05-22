@@ -351,10 +351,6 @@ const SwapForm = (props: SwapFormProps) => {
         setl2InputErr("Insufficient balance");
         return false;
       }
-      if (new BigNumber(Number(netGasFees)).gt(l1InputAmount || 0)) {
-        setl1InputErr("Amount is less than the gas fee");
-        return false;
-      }
     }
     return true;
   };
@@ -734,7 +730,7 @@ const SwapForm = (props: SwapFormProps) => {
               selected={selectL1Token}
               options={[
                 {
-                  icon: "/img/eth-token.svg",
+                  icon: "/img/btc-logo.svg",
                   label: "XBTC",
                   value: "XBTC",
                 },
@@ -768,7 +764,7 @@ const SwapForm = (props: SwapFormProps) => {
             <Select
               options={[
                 {
-                  icon: "/img/eth-token.svg",
+                  icon: "/img/sui-logo.svg",
                   label: "XSUI",
                   value: "XSUI",
                 },

@@ -19,8 +19,6 @@
     "@koa/router": "^10.1.1",
     "@mysten/sui": "^1.29.1",
     "@react-hook/throttle": "^2.2.0",
-    "@sentry/nextjs": "^8.26.0",
-    "@sentry/webpack-plugin": "^1.18.9",
     "@solana/web3.js": "^1.95.3",
     "@suiet/wallet-kit": "^0.4.1",
     "@types/axios": "^0.14.0",

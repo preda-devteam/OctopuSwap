@@ -28,7 +28,7 @@ function Layout({ children }: { children: React.ReactElement }) {
         <Script src="/js/icon.min.js" strategy="beforeInteractive"></Script>
         <WalletWrapper>
           <>
-            <Header />
+            <Header  />
             {children}
           </>
         </WalletWrapper>
