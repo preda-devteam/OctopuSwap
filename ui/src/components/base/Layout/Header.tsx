@@ -1,4 +1,5 @@
 "use client";
+
 import Linker from "@/components/base/Linker";
 import { useEffect, useState } from "react";
 import clss from "classnames";
@@ -27,8 +28,7 @@ export default function Header() {
     <header>
       <div className="container">
         <Linker className="logo" href={linkHome()}>
-          <Image src="/img/new-logo.png" alt="logo" width={116.5} height={36} />
-          <span>OctopuSwap</span>
+          <Image src="/img/new-logo.png" alt="logo" width={220} height={36} />
         </Linker>
         <nav>
           <Linker
@@ -49,9 +49,7 @@ export default function Header() {
             <Linker href={""} className="address-box">
               <img src={DEFAULT_HEADER_ICON} alt="addr" />
               <div className="info" style={{ textAlign: "center" }}>
-                <p className="name line-clamp" >
-                  {wallet?.name || "--"}
-                </p>
+                <p className="name line-clamp">{wallet?.name || "--"}</p>
                 <p className="font-mono">
                   {seesaw({ raw: address, isAddress: true })}
                 </p>
