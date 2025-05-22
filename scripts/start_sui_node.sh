@@ -1,2 +1,2 @@
 #!/bin/bash
-sui start --with-faucet --force-regenesis  --fullnode-rpc-port 9124
+sui start --with-faucet --force-regenesis

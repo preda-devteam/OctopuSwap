@@ -125,14 +125,62 @@ impl SuiAmmClient{
                 })
              .collect::<Result<Vec<_>, _>>()?;
 
-              gas_objects.extend(batchs);
-            }
-
-            gas_objects.truncate(obj_num as usize);
-            
-            Ok(gas_objects)
+            gas_objects.extend(batchs);
         }
-        
+
+        gas_objects.truncate(obj_num as usize);
+            
+        Ok(gas_objects)
+    }
+
+    //publish package
+
+    pub async fn pay_sui(
+        &self,
+        keypair: &SuiKeyPair,
+        input_coins: Vec<ObjectID>,
+        recipients: Vec<SuiAddress>,
+        amounts: Vec<u64>,
+    )-> Result<SuiTransactionBlockResponse, anyhow::Error>{
+        let sender = SuiAddress::from(&keypair.public());
+        let tx_data = self.client
+                          .transaction_builder()
+                          .pay_sui(
+                                sender,
+                                input_coins,
+                                recipients,
+                                amounts,
+                                500000000,
+                            )
+                            .await?;
+        let signature = Signature::new_secure(&IntentMessage::new(Intent::sui_transaction(),&tx_data),keypair);
+
+        let resp = self.submit_tx(tx_data,signature).await?;
+        Ok(resp)
+    }
+
+    pub async fn get_sui_coin(
+        &self,
+        address: &SuiAddress,
+    )-> Result<ObjectID, anyhow::Error>{
+        let info = self.client
+                       .coin_read_api()
+                       .get_coins(*address,None,None,None)
+                       .await?;
+        Ok(info.data[0].coin_object_id)
+    }
+
+    pub async fn get_sui_coins(
+        &self,
+        address: &SuiAddress,
+    )-> Result<Vec<ObjectID>, anyhow::Error>{
+        let info = self.client
+                       .coin_read_api()
+                       .get_coins(*address,None,None,None)
+                       .await?;
+        let coins = info.data.iter().map(|coin| coin.coin_object_id).collect();
+        Ok(coins)
+    }
 
     pub async fn publish_amm_packages(
         &self,
