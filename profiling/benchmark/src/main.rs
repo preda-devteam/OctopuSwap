@@ -31,6 +31,7 @@ const SWAP_MAX_AMOUNT:u64 = 5000;
 
 const GAS_BUDGET:u64 = 2000000000;
 
+const SEND_CONCURRENCY:u64 = 500;
 const PARALLELISM:u64 = 4;
 
 pub struct AMMSwapAccount {
@@ -336,18 +337,6 @@ async fn prepare_swap_transactions(
         let gas = account.gas;
 
         let tx = if use_amm_parallelization{
-            client.swap_amm(
-                &*account.account, 
-                mycoins_package_id,
-                amm_package_id, 
-                gas, 
-                pool_id, 
-                mycoin_obj, 
-                0, 
-                account.use_xbtc,
-                false
-            ).await?
-        }else{
             let pool_index = rng.gen_range(0..shard_pool_ids.len());
             let shard_pool_id = shard_pool_ids[pool_index];
             client.swap_amm_parallelization(
@@ -360,6 +349,18 @@ async fn prepare_swap_transactions(
                 mycoin_obj,
                 0,
                 false,
+                account.use_xbtc,
+                false
+            ).await?
+        }else{
+            client.swap_amm(
+                &*account.account, 
+                mycoins_package_id,
+                amm_package_id, 
+                gas, 
+                pool_id, 
+                mycoin_obj, 
+                0, 
                 account.use_xbtc,
                 false
             ).await?
@@ -417,7 +418,8 @@ async fn benchmark_swap_transactions(
     let failure = Arc::new(AtomicU32::new(0));
 
     let mut tasks = Vec::new();
-    let semaphore = Arc::new(tokio::sync::Semaphore::new(100));
+    let semaphore = Arc::new(tokio::sync::Semaphore::new(SEND_CONCURRENCY as usize));
+
     for tx in transactions {
         let semaphore = semaphore.clone();
         let client = client.clone();
@@ -427,12 +429,17 @@ async fn benchmark_swap_transactions(
         let swap_event_log = Arc::clone(&swap_event_log);
 
         tasks.push(tokio::spawn(async move {
-            let _permit = semaphore.acquire().await.unwrap(); 
-            let delay_ms = rand::thread_rng().gen_range(0..1000);
+            let delay_ms = rand::thread_rng().gen_range(0..500);
             tokio::time::sleep(std::time::Duration::from_millis(delay_ms)).await;
-            let submit_start = Instant::now();
-            let resp = client.submit_tx(tx.tx, tx.sig).await;
-            let latency = submit_start.elapsed().as_millis();
+
+            let (resp,latency) = {
+                let _permit = semaphore.acquire().await.unwrap(); 
+                let submit_start = Instant::now();
+                let resp = client.submit_tx(tx.tx, tx.sig).await;
+                let latency = submit_start.elapsed().as_millis();
+                (resp,latency)
+            };
+            
             match resp {
                 Ok(tx_response) => {
                     if let Some(effects) = &tx_response.effects {
