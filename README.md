@@ -43,11 +43,10 @@ cd api
 pnpm install
 
 # Configure environment
-cp .env.example .env
+change .env file to your own config
 
 # Database setup
-npx prisma migrate deploy
-npx prisma generate
+pnpm db:setup:dev
 
 # Start server
 pnpm dev

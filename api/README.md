@@ -1,4 +1,4 @@
-# AMM API Demo
+# OctopusSwap API Service
 
 This demo is built to showcase how we can build an event indexer + API
 to efficiently serve on-chain data for our app.
@@ -30,7 +30,7 @@ pnpm db:setup:dev
 pnpm dev
 ```
 
-5. Visit [http://localhost:3030/](http://localhost:3000/)
+5. Visit [http://localhost:3030/](http://localhost:3030/)
 
 ## Deploy contracts and create amm pool<a name="Deploy-contracts"></a>
 
