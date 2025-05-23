@@ -92,7 +92,8 @@ profiling/
 **Run Benchmark:**
 
 ```shell
-./scripts/benchmark.sh
+#result log will be export to sui-demo/profiling/results
+./scripts/benchmark.sh 
 ```
 
 ### ⚙️ Scripts
