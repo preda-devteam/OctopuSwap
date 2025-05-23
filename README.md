@@ -60,7 +60,7 @@ pnpm dev
 ### Frontend (UI)
 
 ```shell
-BASHcd ui
+cd ui
 
 # Install dependencies
 pnpm install
@@ -76,7 +76,7 @@ pnpm dev
 ### 📁 move_contracts
 
 ```
-TEXTmove_contracts/
+move_contracts/
 ├── amm/                - Traditional AMM implementation
 ├── amm_parallelization/       - Octpus swap core
 ├── xbtc/               - Wrapped XBTC asset
@@ -86,7 +86,7 @@ TEXTmove_contracts/
 ### 📊 Performance Profiling
 
 ```
-TEXTprofiling/
+profiling/
 ├── benchmark/         - Test scenarios
 └── results/           - Performance reports
 ```
