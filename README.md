@@ -106,7 +106,7 @@ or you can execute the benchmark test manually
 ```shell
 cd sui-demo/profiling/benchmark
 
-#account_num should > tx_num+2
+#account_num should >= tx_num+2
 cargo run --release -- --tx_num <tx_num> --acc_num <account_num> 
 ```
 
