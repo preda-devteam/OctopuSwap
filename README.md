@@ -17,7 +17,6 @@ This project demonstrates a parallelized AMM swap protocol implementation on Sui
 - Complete swap interface demonstration
 - One-click local development setup
 
-------
 
 ## Quick Start
 
@@ -69,7 +68,6 @@ pnpm install
 pnpm dev
 ```
 
-------
 
 ## Module Details
 
