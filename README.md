@@ -1,4 +1,4 @@
-# OctopusSwap: AMM Parallelization Demo on Sui
+# OctopuSwap: AMM Parallelization Demo on Sui
 
 ## Project Overview
 OctopuSwap is Sui's first parallel AMM. 
