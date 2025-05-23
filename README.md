@@ -1,6 +1,9 @@
 # OctopusSwap: AMM Parallelization Demo on Sui
 
 ## Project Overview
+OctopuSwap is Sui's first parallel AMM. 
+
+OctopuSwap is a parallel AMM that restructures a single liquidity pool using multiple parallel shared objects for parallelized transaction, enabling faster and cheaper transactions.
 
 This project demonstrates a parallelized AMM swap protocol implementation on Sui blockchain, featuring:
 
@@ -10,12 +13,15 @@ This project demonstrates a parallelized AMM swap protocol implementation on Sui
 - 🖥️ `ui`: Frontend interface
 - 🚀 `scripts`: Deployment & utility scripts
 
-## Key Features
+## Key Advantages:
+1. Next-level execution speed
+Delivers 2.92× higher effective TPS and 3.5× higher success rate at 5K concurrent swaps—significantly outperforming Sui’s baseline—by structuring a single liquidity pool using parallelized shared-objects.
 
-- Parallel-execution optimized AMM implementation
-- Benchmark-proven TPS improvements
-- Complete swap interface demonstration
-- One-click local development setup
+2. Ultra-Low Gas Fees on Hot Pools
+Even the busiest pools stay low-gas. OctopuSwap enhances Sui’s shared object-based local fee market by reducing gas fee contention—leveraging multiple parallelizable shared objects for a single pool.
+
+3. MEV Resistance for the Masses
+Parallel execution of the small-volume txns diminishes the effectiveness of MEV strategies, benefiting small-volume traders.
 
 
 ## Quick Start
