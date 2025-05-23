@@ -26,15 +26,6 @@ This project demonstrates a parallelized AMM swap protocol implementation on Sui
 - Node.js 18+
 - pnpm
 - PostgreSQL (for API module)
-- rust env
-
-### Local Network Setup
-
-```shell
-# Start local Sui node
-./scripts/start_sui_node.sh
-```
-
 
 
 ### Backend Service (API)
@@ -81,12 +72,27 @@ move_contracts/
 └── xsui/               - Wrapped XSUI asset
 ```
 
+### ⚙️ Scripts
+
+- `start_sui_node.sh`: Starts local development network
+- `benchmark.sh`: Executes performance comparison tests
+
+------
+
+
 ### 📊 Performance Profiling
 
 ```
 profiling/
 ├── benchmark/         - Test scenarios
 └── results/           - Performance reports
+```
+
+
+**Local Network Setup**
+```shell
+# Start local Sui node
+./scripts/start_sui_node.sh
 ```
 
 **Run Benchmark:**
@@ -96,10 +102,14 @@ profiling/
 ./scripts/benchmark.sh 
 ```
 
-### ⚙️ Scripts
+or you can execute the benchmark test manually
+```shell
+cd sui-demo/profiling/benchmark
 
-- `start_sui_node.sh`: Starts local development network
-- `benchmark.sh`: Executes performance comparison tests
+#account_num should > tx_num+2
+cargo run --release -- --tx_num <tx_num> --acc_num <account_num> 
+```
 
-------
+
+
 
