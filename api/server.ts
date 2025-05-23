@@ -12,6 +12,7 @@ import {
 	WhereParam,
 	WhereParamTypes,
 } from './utils/api-queries';
+import { CONFIG } from './config';
 
 const app = express();
 app.use(cors());
@@ -204,7 +205,7 @@ app.get('/getAmountIn', async (req: Request, res: Response) => {
 	}
 });
 
-app.listen(3030, () => console.log(`🚀 Server ready at: http://localhost:3030`));
+app.listen(CONFIG.PORT, () => console.log(`🚀 Server ready at: http://localhost:${CONFIG.PORT}`));
 
 const getAmountOut = async (
 	amountIn: number,

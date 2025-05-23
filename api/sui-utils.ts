@@ -93,12 +93,14 @@ export const publishPackage = async ({
 
 	// @ts-ignore-next-line
 	const packageId = results.objectChanges?.find((x) => x.type === 'published')?.packageId;
+	const createdObjects = results.objectChanges?.filter((x) => x.type === 'created');
 
 	// save to an env file
 	writeFileSync(
 		`${exportFileName}.json`,
 		JSON.stringify({
 			packageId,
+			createdObjects,
 		}),
 		{ encoding: 'utf8', flag: 'w' },
 	);

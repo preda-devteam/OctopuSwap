@@ -9,14 +9,20 @@ import { publishPackage } from '../sui-utils';
 /// We're publishing both as part of our demo.
 (async () => {
 	await publishPackage({
-		packagePath: __dirname + '/../../move_contracts/mycoins',
-		network: 'localnet',
-		exportFileName: 'coin-contract',
+		packagePath: __dirname + '/../../move_contracts/xbtc',
+		network: "localnet",
+		exportFileName: 'xbtc-contract',
+	});
+
+	await publishPackage({
+		packagePath: __dirname + '/../../move_contracts/xsui',
+		network: "localnet",
+		exportFileName: 'xsui-contract',
 	});
 
 	await publishPackage({
 		packagePath: __dirname + '/../../move_contracts/amm_parallelization',
-		network: 'localnet',
+		network: "localnet",
 		exportFileName: 'amm-contract',
 	});
 	

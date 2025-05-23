@@ -24,6 +24,10 @@ export const CONFIG = {
 	POLLING_INTERVAL_MS: 1000,
 	DEFAULT_LIMIT: 50,
 	NETWORK: (process.env.NETWORK as Network) || 'localnet',
-	COIN_CONTRACT: parseConfigurationFile('coin-contract'),
+	PORT: process.env.PORT || 3030,
+	XBTC_CONTRACT: parseConfigurationFile('xbtc-contract'),
+	XSUI_CONTRACT: parseConfigurationFile('xsui-contract'),
 	AMM_CONTRACT: parseConfigurationFile('amm-contract'),
 };
+
+console.log('CONFIG', CONFIG);

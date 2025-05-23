@@ -55,10 +55,6 @@ npx ts-node helpers/publish-contracts.ts
 npx ts-node helpers/create-pool.ts
 ```
 
-3. Call swap on the pool
-```
-npx ts-node helpers/swap.ts
-```
 
 If you want to reset the database (start from scratch), run:
 
